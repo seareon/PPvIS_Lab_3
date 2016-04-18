@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students>
+	<student FIO="I" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+	<student FIO="He" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+	<student FIO="She" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+	<student FIO="It" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+		<student FIO="He" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+	<student FIO="She" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+	<student FIO="It" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+		<student FIO="He" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+	<student FIO="She" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+	<student FIO="It" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+		<student FIO="He" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+	<student FIO="She" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+	<student FIO="It" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+		<student FIO="He" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+	<student FIO="She" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+	<student FIO="It" grup="123" sickness="1" otherCauses="2"
+		withoutGoodReason="3"></student>
+</students>
