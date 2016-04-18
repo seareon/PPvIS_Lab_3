@@ -35,7 +35,7 @@ public class FrameServer extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				jta.append("Run the server\n");
 				if(s == null) {
-					s = new Server(jta);
+					s = new Server(jta, log);
 					s.start();
 				}
 				else {

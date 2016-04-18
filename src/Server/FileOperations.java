@@ -7,6 +7,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import Library.Student;
 
 public class FileOperations {
@@ -20,9 +22,11 @@ public class FileOperations {
 	 private static final String FORMAT = "UTF-8";
 	 private static final String VER = "1.0";
 	 private StudentsData sd;
+	 private Logger log;
 	 
-	 public FileOperations(StudentsData sd) {
+	 public FileOperations(StudentsData sd, Logger log) {
 		this.sd = sd;
+		this.log = log;
 	 }
 	 
 	 public void saveFile(String path) {
@@ -49,6 +53,7 @@ public class FileOperations {
 		 } catch(Exception e) {
 			 JOptionPane.showMessageDialog
 				(null, "Can't save file", "ERROR", JOptionPane.ERROR_MESSAGE|JOptionPane.OK_OPTION);
+			 log.log(Level.ERROR, "Can't save file");
 		 }
 	 }
 	 
@@ -76,6 +81,7 @@ public class FileOperations {
 		 } catch(Exception e) {
 			 JOptionPane.showMessageDialog
 				(null, "Can't open file", "ERROR", JOptionPane.ERROR_MESSAGE|JOptionPane.OK_OPTION);
+			 log.log(Level.ERROR, "Can't open file");
 		 }
 	 }
 }

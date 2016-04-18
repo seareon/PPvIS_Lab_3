@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JTextArea;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import Library.OperationsAndConstants;
 import Library.Student;
 
@@ -23,14 +25,17 @@ public class Server extends Thread {
 	private JTextArea jta;
 	private List<Student> searchList;
 	private FileOperations fo; 
+	private Logger log;
 	
-	public Server(JTextArea jta) {
+	public Server(JTextArea jta, Logger log) {
 		this.jta = jta;
+		this.log = log;
 		try {
 			ss = new ServerSocket(PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 			jta.append("Error creating server\n");
+			log.log(Level.ERROR, "Error creating server");
 			System.exit(1); 
 		}
 	}
@@ -40,7 +45,7 @@ public class Server extends Thread {
 			createSocket();
 			boolean clientIsConnected = true;
 			sd = new StudentsData();
-			fo = new FileOperations(sd);
+			fo = new FileOperations(sd, log);
 			try {
 				while(clientIsConnected) {
 					String str = (String) inS.readObject();
@@ -83,7 +88,8 @@ public class Server extends Thread {
 //				jta.append("Error with streams\n");
 				e.printStackTrace();
 			} catch (IOException e) {
-				jta.append("Error with streams\n");		// сделать нормальное отключение клиента
+				jta.append("Error with streams\n");		
+				log.log(Level.ERROR, "Error with streams");
 //				e.printStackTrace();
 			}
 		}
@@ -99,6 +105,7 @@ public class Server extends Thread {
 			jta.append("Add streams\n");
 		} catch(Exception e) {
 			jta.append("Error creating server\n");
+			log.log(Level.ERROR, "Error creating server");
 			e.printStackTrace();
 			System.exit(1); 
 		}
