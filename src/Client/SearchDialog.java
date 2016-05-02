@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -10,11 +10,11 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import Library.OperationsAndConstants;
-import Library.Student;
+import library.OperationsAndConstants;
+import library.Student;
 
 public class SearchDialog extends DialogTemplateSearchAndDelete {			
-	private MyTable mtable = new MyTable(client, false);
+	private MyTable mtable = new MyTable(c, false);
 	private JButton search;
 	private JScrollPane jsp;
 	
@@ -32,13 +32,7 @@ public class SearchDialog extends DialogTemplateSearchAndDelete {
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(search()) {
-					client.sendToServer(OperationsAndConstants.SEARCH);
-					sendServer();
-					if(client.receiveFromServer().equals(OperationsAndConstants.COMMAND_IS_RECEIVED)) {
-						List<Student> ls = (List<Student>) client.receiveFromServer();
-						mtable.setMaxPage(ls.size());
-						mtable.setList(ls); 	
-					}
+					c.checkSearech();
 				}
 			}
 		}); 
@@ -52,11 +46,15 @@ public class SearchDialog extends DialogTemplateSearchAndDelete {
 		this.add(mainJP);
 		this.setSize(1000, 600);
 		this.setLocationRelativeTo(frame);
-		this.setVisible(true); 
+		this.setVisible(false); 
 	}
 	
 	public void setListTable(List<Student> ls) {
 		mtable.setList(ls); 
 		mtable.newTable();
+	}
+	
+	public MyTable getTable() {
+		return mtable;
 	}
 }

@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,8 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import Library.OperationsAndConstants;
+import library.OperationsAndConstants;
 
 public class DialogTemplateSearchAndDelete extends DialogTemplate {
 	protected final String [] TYPESOFPERMITS = {"------", "По болезни", "По другим причинам", 
@@ -71,10 +70,6 @@ public class DialogTemplateSearchAndDelete extends DialogTemplate {
 		jp2.add(withoutGoodReasonMax);
 		jp.add(jp2);
 	}
-	
-/*	public String getCause() {
-		return cause;
-	} */
 
 	public JComboBox getCombo() {
 		return jcb;
@@ -128,24 +123,7 @@ public class DialogTemplateSearchAndDelete extends DialogTemplate {
 		}
 	}
 	
-	void sendServer() {
-		client.sendToServer(fio.getText());
-		switch(happening) {
-		case 1:
-			client.sendToServer(new Integer(1));
-			client.sendToServer(numberGrup.getText());
-			break;
-		case 2:
-			client.sendToServer(new Integer(2));
-			client.sendToServer(sicknessMin.getText());
-			client.sendToServer(sicknessMax.getText());
-			client.sendToServer(otherCausesMin.getText());
-			client.sendToServer(otherCausesMax.getText());
-			client.sendToServer(withoutGoodReasonMin.getText());
-			client.sendToServer(withoutGoodReasonMax.getText());
-			break;
-		case 3:
-			client.sendToServer(new Integer(3));
-		}
+	public int getOption() {
+		return happening;
 	}
 }

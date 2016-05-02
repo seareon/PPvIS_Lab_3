@@ -1,9 +1,8 @@
-package Server;
+package server;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import Library.Student;
+import library.Student;
 
 public class StudentsData {
 	private List<Student> list;

@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -18,12 +18,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import Library.OperationsAndConstants;
-import Library.Student;
+import library.OperationsAndConstants;
+import library.Student;
 
 public class MyFrame extends JFrame {
 	private JPanel jp = new JPanel();
-	private Client client;
+	private Controller c;
 	private MyTable mtable;		// не нравиться мне это...
 	
 	private ActionListener open;
@@ -41,60 +41,43 @@ public class MyFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent event) {
-				client.sendToServer(OperationsAndConstants.CLIENT_EXIT);
-				event.getWindow().setVisible(false);
-                System.exit(0);
+				c.clientExit(event); 
 			}
 		});
 		setSize(1100, 700);
 		setLocationRelativeTo(null);
 		
-		readProperties();
-		mtable = new MyTable(client, true);
+		c = new Controller(this);
+		mtable = new MyTable(c, true);
+		
 		
 		open = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				client.sendToServer(OperationsAndConstants.OPEN_FILE); 
-				if(client.receiveFromServer().equals(OperationsAndConstants.COMMAND_IS_RECEIVED)) {
-					String [] files = (String []) client.receiveFromServer();
-					String str = (String) JOptionPane.showInputDialog(null, "Choose file:", "File manager", 
-							JOptionPane.PLAIN_MESSAGE, null, files, files[0]);
-					if(str != null) {
-						client.sendToServer(str);
-						mtable.setMaxPage((Integer) client.receiveFromServer());
-						client.sendToServer(mtable.getCurrentRecordsNumber());
-						mtable.setList((List<Student>) client.receiveFromServer());
-					}
-				}
+				c.open();
 			}
 		};
 		
 		save = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				client.sendToServer(OperationsAndConstants.SAVE_FILE);
-				if(client.receiveFromServer().equals(OperationsAndConstants.COMMAND_IS_RECEIVED)) {
-					String str = (String) JOptionPane.showInputDialog(null, "Choose file:", "File manager", 
-							JOptionPane.PLAIN_MESSAGE, null, null, "test.mtxml");
-					client.sendToServer(str);
-				}
+				c.save();
 			}
 		};
 		
 		add = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				createAddDialog();
+				c.createAddDialog();
 			}
 		};
 		
 		search = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				createSearchDialog();
+				c.createSearchDialog();
 			}
 		};
 		
 		delete = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				createDeleteDialog();
+				c.createDeleteDialog();
 			}
 		};
 		
@@ -201,50 +184,29 @@ public class MyFrame extends JFrame {
 		}
 	}
 	
-	private void readProperties() {
-		String host = "";
-		String port = "";
-		File file = 
-				new File("d:\\work\\работа\\JAVA\\workspace_PPvIS\\PPvIS_Lab_3\\src\\Client\\HostAndPort.properties");
-		if (!file.exists()){
-			JOptionPane.showMessageDialog
-            (null, "File HostAndPort.properties not founded.", "ERROR", JOptionPane.ERROR_MESSAGE);
-			System.exit(-1);
-		}
-		try {
-			BufferedReader bf = new BufferedReader(new FileReader(file.getAbsoluteFile()));
-			for(int indexFile = 0; indexFile < 2; indexFile++) {
-				if(indexFile == 0) {
-					host = bf.readLine();
-				}
-				else {
-					port = bf.readLine();
-				}
-			}
-		}catch(Exception e) {
-			JOptionPane.showMessageDialog
-            (null, "Ups!The problem with reading the file HostAndPort.properties.", "ERROR", 
-            		JOptionPane.ERROR_MESSAGE);
-			System.exit(-1);
-		}
-		client = new Client(host, Integer.parseInt(port));
-	}
-	
 	public void sendServerPageAndRecords() {
 		mtable.sendCurrentPage();
 		mtable.sendCurrentRecords();
 	}
 	
-	public Client getClient() {
-		return client;
-	} 
+	public Controller getController() {
+		return c;
+	}
 	
 	public void setMaxPage(int n) {
 		mtable.setMaxPage(n); 
 	}
 	
+	public int getCurrentTableRecordsNumber() {
+		return mtable.getCurrentRecordsNumber();
+	}
+	
 	public void setTable(List<Student> ls) {
 		mtable.setList(ls);
+	}
+	
+	public MyTable getTable() {
+		return mtable;
 	}
 	
 	public void setMenuBar(JMenu jmb,JMenuItem jmi, Font f, ActionListener al) {	

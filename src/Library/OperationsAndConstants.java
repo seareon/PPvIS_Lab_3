@@ -1,4 +1,4 @@
-package Library;
+package library;
 
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;

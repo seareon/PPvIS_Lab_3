@@ -1,4 +1,4 @@
-package Server;
+package server;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,7 +9,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import Library.Student;
+import library.Student;
 
 public class FileOperations {
 	 private static final String FIO = "FIO";

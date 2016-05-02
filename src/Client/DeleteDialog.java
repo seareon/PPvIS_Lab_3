@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -8,8 +8,8 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import Library.OperationsAndConstants;
-import Library.Student;
+import library.OperationsAndConstants;
+import library.Student;
 
 public class DeleteDialog extends DialogTemplateSearchAndDelete {	
 	JButton del;
@@ -25,18 +25,9 @@ public class DeleteDialog extends DialogTemplateSearchAndDelete {
 		del.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(search()) {
-					client.sendToServer(OperationsAndConstants.REMOVE);
-					frame.sendServerPageAndRecords();
-					sendServer();
-					if(client.receiveFromServer().equals(OperationsAndConstants.COMMAND_IS_RECEIVED) && 
-							client.receiveFromServer().equals(OperationsAndConstants.CHANGE_TABLE)) {
-						JOptionPane.showMessageDialog(null, "Remove" + (Integer) client.receiveFromServer() + 
-								" items.");
-						frame.setMaxPage((Integer) client.receiveFromServer());
-						frame.setTable((List<Student>) client.receiveFromServer());
-					} 
+					c.chechDelete();
+					dd.setVisible(false);
 				}
-				dd.setVisible(false); 
 			}
 		});
 		jp.add(del);
@@ -44,6 +35,6 @@ public class DeleteDialog extends DialogTemplateSearchAndDelete {
 		this.add(jp,BorderLayout.SOUTH);
 		this.setSize(600, 300);
 		this.setLocationRelativeTo(frame);
-		this.setVisible(true); 
+		this.setVisible(false); 
 	}
 }

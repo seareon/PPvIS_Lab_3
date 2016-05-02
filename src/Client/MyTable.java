@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -13,14 +13,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import Library.OperationsAndConstants;
-import Library.Student;
+import library.OperationsAndConstants;
+import library.Student;
 
 public class MyTable extends JPanel {
 	private String table;
 	private JLabel veiwTable = new JLabel();
 	private List<Student> l = null;
-	private Client client;
+//	private Client client;
+	private Controller c;
 	private boolean isFrame;		
 	
 	private int currentPageNumber = 1;
@@ -35,15 +36,15 @@ public class MyTable extends JPanel {
 	
 	private KeyListener kl;
 	
-	public MyTable(Client cl, boolean b) {
+	public MyTable(Controller c/*Client cl*/, boolean b) {
 		super();
-		client = cl;
+//		client = cl;
+		this.c = c; 
 		isFrame = b;
 		this.setLayout(new BorderLayout());
 		newTable();
 		JPanel jp = new JPanel();
 		jp.add(veiwTable);
-//		jp.setSize((int) veiwTable.getBounds().getWidth(), (int) veiwTable.getBounds().getHeight());
 		JScrollPane jsp = new JScrollPane(jp);
 		add(jsp, BorderLayout.CENTER);
 		kl = new MyKeyListener();
@@ -110,19 +111,23 @@ public class MyTable extends JPanel {
 		
 		jtb.add(OperationsAndConstants.makeButton("arrow-left.png", new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				setCurrentPage(1);
-				currentPage.setText("1"); 
-				client.sendToServer(OperationsAndConstants.FIRST_PAGE);
-				sendToServerAndReceiptTable();
+				if(l != null) {
+					setCurrentPage(1);
+					currentPage.setText("1"); 
+/*				client.sendToServer(OperationsAndConstants.FIRST_PAGE);
+				sendToServerAndReceiptTable(); */
+					c.arrowLeft(isFrame);
+				}
 			}
 		}));
 		jtb.add(OperationsAndConstants.makeButton("previous.png", new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(currentPageNumber != 1) {
+				if(currentPageNumber != 1 ) {
 					setCurrentPage(currentPageNumber - 1);
 					currentPage.setText("" + currentPageNumber);
-					client.sendToServer(OperationsAndConstants.PREV_PAGE);
-					sendToServerAndReceiptTable();
+/*					client.sendToServer(OperationsAndConstants.PREV_PAGE);
+					sendToServerAndReceiptTable();*/
+				c.previous(isFrame);					
 				} 
 			}
 		}));
@@ -131,17 +136,21 @@ public class MyTable extends JPanel {
 				if(currentPageNumber != maxPageNumber) {
 					setCurrentPage(currentPageNumber + 1);
 					currentPage.setText("" + currentPageNumber);
-					client.sendToServer(OperationsAndConstants.NEXT_PAGE);
-					sendToServerAndReceiptTable();
+/*					client.sendToServer(OperationsAndConstants.NEXT_PAGE);
+					sendToServerAndReceiptTable();*/
+					c.next(isFrame);					
 				} 
 			}
 		}));
 		jtb.add(OperationsAndConstants.makeButton("arrow-right.png", new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setCurrentPage(maxPageNumber);
-				currentPage.setText("" + maxPageNumber); 
-				client.sendToServer(OperationsAndConstants.LAST_PAGE);
-				sendToServerAndReceiptTable();
+				if(l != null) {
+					setCurrentPage(maxPageNumber);
+					currentPage.setText("" + maxPageNumber); 
+/*				client.sendToServer(OperationsAndConstants.LAST_PAGE);
+				sendToServerAndReceiptTable();*/
+					c.arrowRight(isFrame);
+				}
 			}
 		}));
 		
@@ -158,7 +167,11 @@ public class MyTable extends JPanel {
 		return jtb;
 	}
 	
-	private void sendToServerAndReceiptTable() { 
+	public int getCurrentPageNumber() {
+		return currentPageNumber;
+	}
+	
+/*	private void sendToServerAndReceiptTable() { 
 		client.sendToServer(new Integer(currentPageNumber));
 		client.sendToServer(new Integer(currentRecordsNumber));
 		if(isFrame) {
@@ -169,9 +182,9 @@ public class MyTable extends JPanel {
 		if(client.receiveFromServer().equals(OperationsAndConstants.COMMAND_IS_RECEIVED)) {
 			setList((List<Student>)client.receiveFromServer());
 		}
-	}
+	} */
 	
-	private boolean setCurrentPage(int n) {
+	public boolean setCurrentPage(int n) {
 		if(n > 0 && maxPageNumber >= n) {
 			currentPageNumber = n;
 			return true;
@@ -183,7 +196,7 @@ public class MyTable extends JPanel {
 		allPage.setText("/ " + n); 
 	}
 	
-	public void setMaxPage(int n) {		// setMaxSizeRecords(int)??
+	public void setMaxPage(int n) {		
 		currentSizeRecords = n;
 		setMaxPageNumber();
 	}
@@ -204,11 +217,11 @@ public class MyTable extends JPanel {
 	}
 	
 	public void sendCurrentPage() {
-		client.sendToServer(new Integer(currentPageNumber)); 
+		c.sendCurrentPage(isFrame); 
 	}
 	
 	public void sendCurrentRecords() {
-		client.sendToServer(new Integer(currentRecordsNumber));
+		c.sendCurrentRecords(isFrame);
 	} 
 	
 	class MyKeyListener implements KeyListener {			
@@ -234,9 +247,11 @@ public class MyTable extends JPanel {
 				else {
 					currentPage.setText("" + currentPageNumber);
 				}
-				if(p || r) {
-					client.sendToServer(OperationsAndConstants.CHANGE_CURRENT_PAGE_AND_NUMBER_RECORDS);
-					sendToServerAndReceiptTable();
+				if((p || r) && l != null) {
+/*					client.sendToServer(
+							OperationsAndConstants.CHANGE_CURRENT_PAGE_AND_NUMBER_RECORDS);
+					sendToServerAndReceiptTable();*/
+					c.changePageNumberRecords(isFrame);
 				} 
 			}
 		}

@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -9,8 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import Library.OperationsAndConstants;
-import Library.Student;
+import library.OperationsAndConstants;
+import library.Student;
 
 public class AddDialog extends DialogTemplate {	
 	protected final JLabel SICKNESS = new JLabel("  Пропуски по болезни: ");
@@ -41,23 +41,7 @@ public class AddDialog extends DialogTemplate {
 		AddDialog ad = this;
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(OperationsAndConstants.isInt(fio.getText()) == -1 && 
-						OperationsAndConstants.isInt(numberGrup.getText()) == 1 && 
-						OperationsAndConstants.isInt(sickness.getText()) == 1 && 
-						OperationsAndConstants.isInt(otherCauses.getText()) == 1 && 
-						OperationsAndConstants.isInt(withoutGoodReason.getText()) == 1) {
-					client.sendToServer(OperationsAndConstants.ADD);
-					if(client.receiveFromServer().equals(OperationsAndConstants.COMMAND_IS_RECEIVED)) {
-						frame.sendServerPageAndRecords();
-						client.sendToServer(new Student(fio.getText(), numberGrup.getText(), 
-								Integer.parseInt(sickness.getText()), Integer.parseInt(otherCauses.getText()),
-								Integer.parseInt(withoutGoodReason.getText())));
-						if(client.receiveFromServer().equals(OperationsAndConstants.CHANGE_TABLE)) {
-							frame.setMaxPage((Integer) client.receiveFromServer());
-							frame.setTable((List<Student>) client.receiveFromServer());
-						}
-					}
-				}
+				c.chechAdd();
 				ad.setVisible(false); 
 			}
 		});
@@ -67,7 +51,7 @@ public class AddDialog extends DialogTemplate {
 		setResizable (false);
 		this.setSize(600, 300);
 		this.setLocationRelativeTo(frame);
-		this.setVisible(true); 
+		this.setVisible(false); 
 	}
 
 	public JTextField getTextFieldSickness() {

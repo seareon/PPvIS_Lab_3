@@ -1,8 +1,7 @@
-package Client;
+package client;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -20,12 +19,12 @@ public class DialogTemplate extends JDialog {
 	protected JTextField fio = new JTextField(40);
 	protected JTextField numberGrup = new JTextField(6);
 	
-	protected Client client;
+	protected Controller c;
 	
 	DialogTemplate(String str, MyFrame frame) {
 		super(frame, str, true);
 		this.frame = frame;
-		client = frame.getClient();
+		c = frame.getController();
 	}
 
 	public String getFio() {

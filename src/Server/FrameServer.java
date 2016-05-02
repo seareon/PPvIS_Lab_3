@@ -1,10 +1,10 @@
-package Server;
+package server;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.apache.log4j.Logger;
+import org.apache.log4j.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,11 +14,14 @@ import javax.swing.JTextArea;
 public class FrameServer extends JFrame {
 	private JTextArea jta = new JTextArea();
 	private Server s = null; 
-	private static final Logger log = Logger.getLogger(FrameServer.class);
+	private Logger log;
 	
 	FrameServer() {
 		super("Server");
-		
+		//String nameFile = "d:\\work\\работа\\JAVA\\workspace_PPvIS\\PPvIS_Lab_3\\log4j2.xml";
+		//PropertyConfigurator.configure(nameFile);
+		log = Logger.getRootLogger();
+//		Logger localLog2 = Logger.getLogger("logfile");
 		setSize(800, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -33,7 +36,7 @@ public class FrameServer extends JFrame {
 		JButton run = new JButton("Run the server");
 		run.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				jta.append("Run the server\n");
+				jta.append("Run the server\n"); 
 				if(s == null) {
 					s = new Server(jta, log);
 					s.start();
